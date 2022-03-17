@@ -5,54 +5,62 @@ namespace AddressBook
 {
     class Contacts
     {
-        public string First_Name = "";
-        public string Last_Name = "";
-        public string Full_Name = "";
-        public string Address = "";
-        public string City = "";
-        public string State = "";
-        public string Zip_Code = "";
-        public string Phone_Number = "";
-        public string Email = "";
-        public Contacts(string First, string Last)
-        { 
-            First_Name = First;
-            Last_Name = Last;  
-            Full_Name = First_Name.ToLower() + Last_Name.ToLower();
-            Console.Write("Enter Address: ");
-            Address = Console.ReadLine();
-            Console.Write("Enter City: ");
-            City = Console.ReadLine();
-            Console.Write("Enter State: ");
-            State = Console.ReadLine();
-            Console.Write("Enter Zip : ");
-            Zip_Code = Console.ReadLine();
-            Console.Write("Enter Phone Number: ");
-            Phone_Number = Console.ReadLine();
-            Console.Write("Enter Email Address: ");
-            Email = Console.ReadLine();
-            
+        public string[] Array_of_Details = new string[8];
+        public Contacts(string First, string Last, string Add, string City, string State, string Zip, string Phone, string Email)
+        {
+            Array_of_Details[0] = First;
+            Array_of_Details[1] = Last;
+            Array_of_Details[2] = Add;
+            Array_of_Details[3] = City;
+            Array_of_Details[4] = State;
+            Array_of_Details[5] = Zip;
+            Array_of_Details[6] = Phone;
+            Array_of_Details[7] = Email;
+        }
+        public void Check()
+        {
+            Console.WriteLine("\nThe details for {0} {1} are:\nAddress: {2}\nCity: {3}\nState: {4}\n" +
+                "Zip Code: {5}\nPhone Number: {6}\nEmail: {7}", Array_of_Details[0], 
+                Array_of_Details[1], Array_of_Details[2], Array_of_Details[3], 
+                Array_of_Details[4], Array_of_Details[5], Array_of_Details[6], Array_of_Details[7]);
         }
     }
     class AddressBookMain
     {
-        public Dictionary<string, Contacts> Book = new Dictionary<string, Contacts>();
+        Dictionary<string, string[]> Page;
         public void AddAddress()
         {
-            string First = "";
-            string Last = "";
             Console.Write("Enter First Name: ");
-            First = Console.ReadLine();
+            string First_Name = Console.ReadLine();
             Console.Write("Enter Last Name: ");
-            Last = Console.ReadLine();
-            Contacts Details = new Contacts(First, Last);
-            Book.Add(Details.Full_Name, Details);
+            string Last_Name = Console.ReadLine();
+            Console.Write("Enter Address: ");
+            string Address = Console.ReadLine();
+            Console.Write("Enter City: ");
+            string City = Console.ReadLine();
+            Console.Write("Enter State: ");
+            string State = Console.ReadLine();
+            Console.Write("Enter Zip : ");
+            string Zip_Code = Console.ReadLine();
+            Console.Write("Enter Phone Number: ");
+            string Phone_Number = Console.ReadLine();
+            Console.Write("Enter Email Address: ");
+            string Email = Console.ReadLine();
+            Contacts Record = new Contacts(First_Name, Last_Name, Address, City, State, Zip_Code, Phone_Number, Email);
+            Page = new Dictionary<string, string[]>();
+            Page.Add(First_Name, Record.Array_of_Details);
+            Record.Check();
         }
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Address Book Program");
-            AddressBookMain Record = new AddressBookMain();
-            Record.AddAddress();  
+            AddressBookMain Book = new AddressBookMain();
+            Console.Write("Enter the number of address you want to add: ");
+            int Number = Convert.ToInt32(Console.ReadLine());
+            for (int i = 0; i < Number; i++)
+            {
+                Book.AddAddress();
+            }
         }
     }
 }
