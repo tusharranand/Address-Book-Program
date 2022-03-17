@@ -5,15 +5,15 @@ namespace AddressBook
 {
     class Contacts
     {
-        public static string First_Name = "";
-        public static string Last_Name = "";
+        public string First_Name = "";
+        public string Last_Name = "";
         public string Full_Name = "";
-        public static string Address = "";
-        public static string City = "";
-        public static string State = "";
-        public static string Zip_Code = "";
-        public static string Phone_Number = "";
-        public static string Email = "";
+        public string Address = "";
+        public string City = "";
+        public string State = "";
+        public string Zip_Code = "";
+        public string Phone_Number = "";
+        public string Email = "";
         public Contacts(string First, string Last)
         { 
             First_Name = First;
