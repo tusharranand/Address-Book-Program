@@ -52,8 +52,12 @@ namespace AddressBook
             Page.Add(First_Name, Record.Array_of_Details);
             Record.Check();
         }
-        public void Edit(string First_Name, int Index)
+        public void Edit()
         {
+            Console.Write("Enter the first name for the contact: ");
+            string First_Name = Console.ReadLine();
+            Console.Write("Enter a number to edit first name(1), last name(2), address(3), city(4), state(5), zip code(6), \nphone number(7) or email(8): ");
+            int Index = Convert.ToInt32(Console.ReadLine());
             if (!Page.ContainsKey(First_Name))
                 throw new ArgumentNullException("No such person in the Addressbook");
             Page.TryGetValue(First_Name, out string[] Edit_Detail);
@@ -63,6 +67,16 @@ namespace AddressBook
             Page.Remove(First_Name);
             Page.Add(Edit_Detail[0], Edit_Detail);
             Record.Check();
+        }
+        public void Delete()
+        {
+            Console.Write("Enter the first name for the contact: ");
+            string First_Name = Console.ReadLine();
+            if (!Page.ContainsKey(First_Name))
+                throw new ArgumentNullException("No such person in the Addressbook");
+            Page.TryGetValue(First_Name, out string[] Edit_Detail);
+            Page.Remove(First_Name);
+            Console.WriteLine("Address entry for {0} {1} was removed.", Edit_Detail[0], Edit_Detail[1]);
         }
         public static void Main(string[] args)
         {
@@ -74,16 +88,20 @@ namespace AddressBook
             {
                 Book.AddAddress();
             }
-            Console.Write("Do you want to edit a contact? (y/n): \n");
+            Console.Write("Do you want to edit a contact? (y/n): ");
             char Confirmation = Convert.ToChar(Console.ReadLine());
             while (Confirmation == 'y')
             {
-                Console.Write("Enter the first name for the contact: ");
-                string First_Name = Console.ReadLine();
-                Console.Write("Enter a number to edit first name(1), last name(2), address(3), city(4), state(5), zip code(6), \nphone number(7) or email(8): ");
-                Number = Convert.ToInt32(Console.ReadLine());
-                Book.Edit(First_Name, Number);
-                Console.Write("Edit another? (y/n): ");
+                Book.Edit();
+                Console.Write("\nEdit another? (y/n): ");
+                Confirmation = Convert.ToChar(Console.ReadLine());
+            }
+            Console.Write("\nDo you want to delete a contact? (y/n): ");
+            Confirmation = Convert.ToChar(Console.ReadLine());
+            while (Confirmation == 'y')
+            {
+                Book.Delete();
+                Console.Write("\nDelete another? (y/n): ");
                 Confirmation = Convert.ToChar(Console.ReadLine());
             }
         }
