@@ -20,7 +20,7 @@ namespace AddressBook
         public void Check()
         {
             Console.WriteLine("\nThe details for {0} {1} are:\nAddress: {2}\nCity: {3}\nState: {4}\n" +
-                "Zip Code: {5}\nPhone Number: {6}\nEmail: {7}", Array_of_Details[0], 
+                "Zip Code: {5}\nPhone Number: {6}\nEmail: {7}\n", Array_of_Details[0], 
                 Array_of_Details[1], Array_of_Details[2], Array_of_Details[3], 
                 Array_of_Details[4], Array_of_Details[5], Array_of_Details[6], Array_of_Details[7]);
         }
@@ -28,6 +28,7 @@ namespace AddressBook
     class AddressBookMain
     {
         Dictionary<string, string[]> Page;
+        
         public void AddAddress()
         {
             Console.Write("Enter First Name: ");
@@ -51,6 +52,18 @@ namespace AddressBook
             Page.Add(First_Name, Record.Array_of_Details);
             Record.Check();
         }
+        public void Edit(string First_Name, int Index)
+        {
+            if (!Page.ContainsKey(First_Name))
+                throw new ArgumentNullException("No such person in the Addressbook");
+            Page.TryGetValue(First_Name, out string[] Edit_Detail);
+            Console.Write("Enter the new value: ");
+            Edit_Detail[Index-1] = Console.ReadLine();
+            Contacts Record = new Contacts(Edit_Detail[0], Edit_Detail[1], Edit_Detail[2], Edit_Detail[3], Edit_Detail[4], Edit_Detail[5], Edit_Detail[6], Edit_Detail[7]);
+            Page.Remove(First_Name);
+            Page.Add(Edit_Detail[0], Edit_Detail);
+            Record.Check();
+        }
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Address Book Program");
@@ -60,6 +73,18 @@ namespace AddressBook
             for (int i = 0; i < Number; i++)
             {
                 Book.AddAddress();
+            }
+            Console.Write("Do you want to edit a contact? (y/n): \n");
+            char Confirmation = Convert.ToChar(Console.ReadLine());
+            while (Confirmation == 'y')
+            {
+                Console.Write("Enter the first name for the contact: ");
+                string First_Name = Console.ReadLine();
+                Console.Write("Enter a number to edit first name(1), last name(2), address(3), city(4), state(5), zip code(6), \nphone number(7) or email(8): ");
+                Number = Convert.ToInt32(Console.ReadLine());
+                Book.Edit(First_Name, Number);
+                Console.Write("Edit another? (y/n): ");
+                Confirmation = Convert.ToChar(Console.ReadLine());
             }
         }
     }
