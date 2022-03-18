@@ -52,8 +52,12 @@ namespace AddressBook
             Page.Add(First_Name, Record.Array_of_Details);
             Record.Check();
         }
-        public void Edit(string First_Name, int Index)
+        public void Edit()
         {
+            Console.Write("Enter the first name for the contact: ");
+            string First_Name = Console.ReadLine();
+            Console.Write("Enter a number to edit first name(1), last name(2), address(3), city(4), state(5), zip code(6), \nphone number(7) or email(8): ");
+            int Index = Convert.ToInt32(Console.ReadLine());
             if (!Page.ContainsKey(First_Name))
                 throw new ArgumentNullException("No such person in the Addressbook");
             Page.TryGetValue(First_Name, out string[] Edit_Detail);
@@ -78,11 +82,7 @@ namespace AddressBook
             char Confirmation = Convert.ToChar(Console.ReadLine());
             while (Confirmation == 'y')
             {
-                Console.Write("Enter the first name for the contact: ");
-                string First_Name = Console.ReadLine();
-                Console.Write("Enter a number to edit first name(1), last name(2), address(3), city(4), state(5), zip code(6), \nphone number(7) or email(8): ");
-                Number = Convert.ToInt32(Console.ReadLine());
-                Book.Edit(First_Name, Number);
+                Book.Edit();
                 Console.Write("Edit another? (y/n): ");
                 Confirmation = Convert.ToChar(Console.ReadLine());
             }
