@@ -31,8 +31,18 @@ namespace AddressBook
 
         public void AddAddress()
         {
-            Console.Write("Enter First Name: ");
-            string First_Name = Console.ReadLine();
+            string First_Name;
+            try
+            {
+                Console.Write("Enter First Name: ");
+                First_Name = Console.ReadLine();
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ArgumentNullException("First name can not be null.");
+            }
+            if (checkDuplicate(First_Name))
+                throw new Exception("Another person by the same name exists in the Address Book");
             Console.Write("Enter Last Name: ");
             string Last_Name = Console.ReadLine();
             Console.Write("Enter Address: ");
@@ -47,11 +57,12 @@ namespace AddressBook
             string Phone_Number = Console.ReadLine();
             Console.Write("Enter Email Address: ");
             string Email = Console.ReadLine();
-            Contacts Record = new Contacts(
-                First_Name, Last_Name, Address, City, State, Zip_Code, Phone_Number, Email);
+            Contacts Record = new Contacts(First_Name, Last_Name, Address, City, State, Zip_Code, 
+                Phone_Number, Email);
             Page.Add(First_Name, Record.Array_of_Details);
             Record.Check();
         }
+        public bool checkDuplicate(string name) => (Page.ContainsKey(name)) ? true : false;
         public void Edit()
         {
             Console.Write("\nEnter the first name for the contact: ");
@@ -172,6 +183,7 @@ namespace AddressBook
             Console.WriteLine("Welcome to Address Book Program");
             AddressBookMain Relatives = new AddressBookMain();
             AddressBookMain Work = new AddressBookMain();
+            AddressBookMain Main_Address_book = new AddressBookMain();
             int Control;
             do
             {
