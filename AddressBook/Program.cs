@@ -101,27 +101,25 @@ namespace AddressBook
             string Name = Console.ReadLine();
             if (Name != "all")
             {
-                Page.TryGetValue(Name, out string[] Edit_Detail);
-                Contacts Record = new Contacts(
-                    Edit_Detail[0], Edit_Detail[1], 
-                    Edit_Detail[2], Edit_Detail[3], 
-                    Edit_Detail[4], Edit_Detail[5], 
-                    Edit_Detail[6], Edit_Detail[7]);
-                Record.Check();
+                Display(Name);
             }
             else
             {
                 foreach (string Key in Page.Keys)
                 {
-                    Page.TryGetValue(Key, out string[] Edit_Detail);
-                    Contacts Record = new Contacts(
-                        Edit_Detail[0], Edit_Detail[1],
-                        Edit_Detail[2], Edit_Detail[3],
-                        Edit_Detail[4], Edit_Detail[5],
-                        Edit_Detail[6], Edit_Detail[7]);
-                    Record.Check();
+                    Display(Key);
                 }
             }
+        }
+        public void Display(string Name)
+        {
+            Page.TryGetValue(Name, out string[] Edit_Detail);
+            Contacts Record = new Contacts(
+                Edit_Detail[0], Edit_Detail[1],
+                Edit_Detail[2], Edit_Detail[3],
+                Edit_Detail[4], Edit_Detail[5],
+                Edit_Detail[6], Edit_Detail[7]);
+            Record.Check();
         }
         public void search(string name, int cityOrState)
         {
@@ -129,20 +127,16 @@ namespace AddressBook
             {
                 if (cityOrState == 1)
                 {
-                    Func<string[], bool> InCity = details => details[3] == name;
+                    Func<string[], bool> InCity = details => details[3].ToLower() == name.ToLower();
                     if (InCity(details))
-                        Console.WriteLine(details[0]);
+                        Display(details[0]);
                 }
                 else
                 {
-                    Func<string[], bool> InState = details => details[4] == name;
+                    Func<string[], bool> InState = details => details[4].ToLower() == name.ToLower();
                     if (InState(details))
-                        Console.WriteLine(details[0]);
+                        Display(details[0]);
                 }
-                //if (cityOrState == 1 && details[3].ToLower() == name.ToLower())
-                //    Console.WriteLine(key);
-                //else if (cityOrState == 2 && details[4].ToLower() == name.ToLower())
-                //    Console.WriteLine(key);
             }
         }
     public void Access_to_Addressbook()
