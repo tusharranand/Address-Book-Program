@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 
 namespace AddressBook
 {
@@ -28,6 +28,9 @@ namespace AddressBook
     class AddressBookMain
     {
         Dictionary<string, string[]> Page = new Dictionary<string, string[]>();
+        List<string> persons = new List<string>();
+        Dictionary<string, List<string>> cityPerson = new Dictionary<string, List<string>>();
+        Dictionary<string, List<string>> statePerson = new Dictionary<string, List<string>>();
 
         public void AddAddress()
         {
@@ -61,6 +64,36 @@ namespace AddressBook
                 Phone_Number, Email);
             Page.Add(First_Name, Record.Array_of_Details);
             Record.Check();
+            if (!cityPerson.Keys.Contains(City.ToLower()))
+            {
+                persons.Add(First_Name);
+                cityPerson.Add(City.ToLower(), persons);
+                persons.Clear();
+            }
+            else
+            {
+                cityPerson.TryGetValue(City.ToLower(), out persons);
+                if (!persons.Contains(First_Name))
+                    persons.Add(First_Name);
+                cityPerson.Remove(City.ToLower());
+                cityPerson.Add(City.ToLower(), persons);
+                persons.Clear();
+            }
+            if (!statePerson.Keys.Contains(State.ToLower()))
+            {
+                persons.Add(First_Name);
+                statePerson.Add(State.ToLower(), persons);
+                persons.Clear();
+            }
+            else
+            {
+                statePerson.TryGetValue(State.ToLower(), out persons);
+                if (!persons.Contains(First_Name))
+                    persons.Add(First_Name);
+                statePerson.Remove(State.ToLower());
+                statePerson.Add(State.ToLower(), persons);
+                persons.Clear();
+            }
         }
         public bool checkDuplicate(string name) => (Page.ContainsKey(name)) ? true : false;
         public void Edit()
@@ -129,17 +162,40 @@ namespace AddressBook
                 {
                     Func<string[], bool> InCity = details => details[3].ToLower() == name.ToLower();
                     if (InCity(details))
-                        Display(details[0]);
+                        Console.WriteLine(details[0]);
                 }
                 else
                 {
                     Func<string[], bool> InState = details => details[4].ToLower() == name.ToLower();
                     if (InState(details))
-                        Display(details[0]);
+                        Console.WriteLine(details[0]);
                 }
             }
         }
-    public void Access_to_Addressbook()
+        public void viewContacts()
+        {
+            Console.Write("Search by (City/State): ");
+            string cityOrState = Console.ReadLine().ToLower();
+            if (cityOrState == "city")
+            {
+                Console.Write("Enter the name of the city: ");
+                string city = Console.ReadLine();
+                cityPerson.TryGetValue(city, out persons);
+                foreach (string name in persons)
+                    Display(name);
+                persons.Clear();
+            }
+            else
+            {
+                Console.Write("Enter the name of the state: ");
+                string state = Console.ReadLine();
+                statePerson.TryGetValue(state, out persons);
+                foreach (string name in persons)
+                    Display(name);
+                persons.Clear();
+            }
+        }
+        public void Access_to_Addressbook()
         {
             int Control;
             do
@@ -206,6 +262,7 @@ namespace AddressBook
                 Console.WriteLine("1 for Relatives Address book");
                 Console.WriteLine("2 for Work Address Book");
                 Console.WriteLine("3 to Search across all Address books");
+                Console.WriteLine("4 to View contacts in a City or State");
                 Console.WriteLine("0 to EXIT");
                 Control = Convert.ToInt32(Console.ReadLine());
                 switch (Control)
@@ -236,6 +293,24 @@ namespace AddressBook
                         Console.WriteLine("Names of people living in {0} are:\n", name);
                         Relatives.search(name, num);
                         Work.search(name, num);
+                        break;
+                    case 4:
+                        Console.WriteLine("\n1 for Relatives");
+                        Console.WriteLine("2 for Work");
+                        Console.WriteLine("0 to Exit");
+                        Console.Write("Pick an address book: ");
+                        int book = Convert.ToInt32(Console.ReadLine());
+                        switch (book)
+                        {
+                            case 1:
+                                Relatives.viewContacts();
+                                break;
+                            case 2:
+                                Work.viewContacts();
+                                break;
+                            default:
+                                break;
+                        }
                         break;
                     case 0:
                         break;
