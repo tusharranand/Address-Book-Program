@@ -154,23 +154,31 @@ namespace AddressBook
                 Edit_Detail[6], Edit_Detail[7]);
             Record.Check();
         }
-        public void search(string name, int cityOrState)
+        public int search(string name, int cityOrState)
         {
+            int num = 0;
             foreach (string[] details in Page.Values) 
             {
                 if (cityOrState == 1)
                 {
                     Func<string[], bool> InCity = details => details[3].ToLower() == name.ToLower();
                     if (InCity(details))
+                    {
                         Console.WriteLine(details[0]);
+                        num++;
+                    }
                 }
                 else
                 {
                     Func<string[], bool> InState = details => details[4].ToLower() == name.ToLower();
                     if (InState(details))
+                    {
                         Console.WriteLine(details[0]);
+                        num++;
+                    }
                 }
             }
+            return num;
         }
         public void viewContacts()
         {
@@ -291,8 +299,8 @@ namespace AddressBook
                             num = 2;
                         }
                         Console.WriteLine("Names of people living in {0} are:\n", name);
-                        Relatives.search(name, num);
-                        Work.search(name, num);
+                        int result = Relatives.search(name, num) + Work.search(name, num);
+                        Console.WriteLine("Number of people in {0} are {1}", name, num);
                         break;
                     case 4:
                         Console.WriteLine("\n1 for Relatives");
