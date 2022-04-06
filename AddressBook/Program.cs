@@ -123,7 +123,29 @@ namespace AddressBook
                 }
             }
         }
-        public void Access_to_Addressbook()
+        public void search(string name, int cityOrState)
+        {
+            foreach (string[] details in Page.Values) 
+            {
+                if (cityOrState == 1)
+                {
+                    Func<string[], bool> InCity = details => details[3] == name;
+                    if (InCity(details))
+                        Console.WriteLine(details[0]);
+                }
+                else
+                {
+                    Func<string[], bool> InState = details => details[4] == name;
+                    if (InState(details))
+                        Console.WriteLine(details[0]);
+                }
+                //if (cityOrState == 1 && details[3].ToLower() == name.ToLower())
+                //    Console.WriteLine(key);
+                //else if (cityOrState == 2 && details[4].ToLower() == name.ToLower())
+                //    Console.WriteLine(key);
+            }
+        }
+    public void Access_to_Addressbook()
         {
             int Control;
             do
@@ -183,13 +205,13 @@ namespace AddressBook
             Console.WriteLine("Welcome to Address Book Program");
             AddressBookMain Relatives = new AddressBookMain();
             AddressBookMain Work = new AddressBookMain();
-            AddressBookMain Main_Address_book = new AddressBookMain();
             int Control;
             do
             {
                 Console.WriteLine("\nChoose an Address Book: ");
                 Console.WriteLine("1 for Relatives Address book");
                 Console.WriteLine("2 for Work Address Book");
+                Console.WriteLine("3 to Search across all Address books");
                 Console.WriteLine("0 to EXIT");
                 Control = Convert.ToInt32(Console.ReadLine());
                 switch (Control)
@@ -199,6 +221,27 @@ namespace AddressBook
                         break;
                     case 2:
                         Work.Access_to_Addressbook();
+                        break;
+                    case 3:
+                        Console.Write("Search by (City/State): ");
+                        string cityOrState = Console.ReadLine().ToLower();
+                        string name = "";
+                        int num = 0;
+                        if (cityOrState == "city")
+                        {
+                            Console.Write("Enter the name of the city: ");
+                            name = Console.ReadLine();
+                            num = 1;
+                        }
+                        else if (cityOrState == "state")
+                        {
+                            Console.Write("Enter the name of the state: ");
+                            name = Console.ReadLine();
+                            num = 2;
+                        }
+                        Console.WriteLine("Names of people living in {0} are:\n", name);
+                        Relatives.search(name, num);
+                        Work.search(name, num);
                         break;
                     case 0:
                         break;
