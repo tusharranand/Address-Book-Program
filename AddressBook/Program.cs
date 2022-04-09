@@ -203,6 +203,15 @@ namespace AddressBook
                 persons.Clear();
             }
         }
+        public void SortAlphabatically()
+        {
+            List<string> keys = new List<string>(Page.Keys);
+            keys.Sort();
+            foreach (string key in keys)
+            {
+                Display(key);
+            }
+        }
         public void Access_to_Addressbook()
         {
             int Control;
@@ -212,6 +221,7 @@ namespace AddressBook
                 Console.WriteLine("2 to Edit Contacts");
                 Console.WriteLine("3 to Delete Contacts");
                 Console.WriteLine("4 to Display Contacts");
+                Console.WriteLine("5 to Sort the address book");
                 Console.WriteLine("0 to EXIT");
                 Console.Write("Enter a value: ");
                 Control = Convert.ToInt32(Console.ReadLine());
@@ -251,6 +261,9 @@ namespace AddressBook
                             Console.Write("Display another? (y/n): ");
                             Confirmation = Convert.ToChar(Console.ReadLine());
                         }
+                        break;
+                    case 5:
+                        SortAlphabatically();
                         break;
                     default:
                         Console.WriteLine("Invalid Entry");
