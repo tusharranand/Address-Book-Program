@@ -28,9 +28,10 @@ namespace AddressBook
     class AddressBookMain
     {
         Dictionary<string, string[]> Page = new Dictionary<string, string[]>();
-        List<string> persons = new List<string>();
+        List<string> Temp = new List<string>();
         Dictionary<string, List<string>> cityPerson = new Dictionary<string, List<string>>();
         Dictionary<string, List<string>> statePerson = new Dictionary<string, List<string>>();
+        Dictionary<string, List<string>> zipPerson = new Dictionary<string, List<string>>();
 
         public void AddAddress()
         {
@@ -64,35 +65,26 @@ namespace AddressBook
                 Phone_Number, Email);
             Page.Add(First_Name, Record.Array_of_Details);
             Record.Check();
-            if (!cityPerson.Keys.Contains(City.ToLower()))
+            SaveInOtherDictionaries(cityPerson, First_Name, City); 
+            SaveInOtherDictionaries(statePerson, First_Name, State);
+            SaveInOtherDictionaries(zipPerson, First_Name, Zip_Code);
+        }
+        public void SaveInOtherDictionaries(Dictionary<string, List<string>> dict, string First_Name, string PlaceIdentifier)
+        {
+            if (!dict.Keys.Contains(PlaceIdentifier.ToLower()))
             {
-                persons.Add(First_Name);
-                cityPerson.Add(City.ToLower(), persons);
-                persons.Clear();
+                Temp.Add(First_Name);
+                dict.Add(PlaceIdentifier.ToLower(), Temp);
+                Temp.Clear();
             }
             else
             {
-                cityPerson.TryGetValue(City.ToLower(), out persons);
-                if (!persons.Contains(First_Name))
-                    persons.Add(First_Name);
-                cityPerson.Remove(City.ToLower());
-                cityPerson.Add(City.ToLower(), persons);
-                persons.Clear();
-            }
-            if (!statePerson.Keys.Contains(State.ToLower()))
-            {
-                persons.Add(First_Name);
-                statePerson.Add(State.ToLower(), persons);
-                persons.Clear();
-            }
-            else
-            {
-                statePerson.TryGetValue(State.ToLower(), out persons);
-                if (!persons.Contains(First_Name))
-                    persons.Add(First_Name);
-                statePerson.Remove(State.ToLower());
-                statePerson.Add(State.ToLower(), persons);
-                persons.Clear();
+                dict.TryGetValue(PlaceIdentifier.ToLower(), out Temp);
+                if (!Temp.Contains(First_Name))
+                    Temp.Add(First_Name);
+                dict.Remove(PlaceIdentifier.ToLower());
+                dict.Add(PlaceIdentifier.ToLower(), Temp);
+                Temp.Clear();
             }
         }
         public bool checkDuplicate(string name) => (Page.ContainsKey(name)) ? true : false;
@@ -188,19 +180,32 @@ namespace AddressBook
             {
                 Console.Write("Enter the name of the city: ");
                 string city = Console.ReadLine();
-                cityPerson.TryGetValue(city, out persons);
-                foreach (string name in persons)
+                cityPerson.TryGetValue(city, out Temp);
+                foreach (string name in Temp)
                     Display(name);
-                persons.Clear();
+                Temp.Clear();
             }
             else
             {
                 Console.Write("Enter the name of the state: ");
                 string state = Console.ReadLine();
-                statePerson.TryGetValue(state, out persons);
-                foreach (string name in persons)
+                statePerson.TryGetValue(state, out Temp);
+                foreach (string name in Temp)
                     Display(name);
-                persons.Clear();
+                Temp.Clear();
+            }
+        }
+        public void SortDictionary(Dictionary<string, List<string>> Dict)
+        {
+            List<string> person = new List<string>();
+            Temp = new List<string>(Dict.Keys);
+            Temp.Sort();
+            foreach (string PlaceIdentifier in Temp)
+            {
+                Dict.TryGetValue(PlaceIdentifier, out person);
+                person.Sort();
+                foreach (string name in person)
+                    Display(name);
             }
         }
         public void SortAlphabatically()
@@ -208,8 +213,23 @@ namespace AddressBook
             List<string> keys = new List<string>(Page.Keys);
             keys.Sort();
             foreach (string key in keys)
-            {
                 Display(key);
+        }
+        public void SortCityStateZip()
+        {
+            Console.Write("Sort by (City/State/Zip): ");
+            string CSorZ = Console.ReadLine();
+            switch (CSorZ.ToLower())
+            {
+                case "city":
+                    SortDictionary(cityPerson);
+                    break;
+                case "state":
+                    SortDictionary(statePerson);
+                    break;
+                case "zip":
+                    SortDictionary(zipPerson);
+                    break;
             }
         }
         public void Access_to_Addressbook()
@@ -221,7 +241,8 @@ namespace AddressBook
                 Console.WriteLine("2 to Edit Contacts");
                 Console.WriteLine("3 to Delete Contacts");
                 Console.WriteLine("4 to Display Contacts");
-                Console.WriteLine("5 to Sort the address book");
+                Console.WriteLine("5 to Sort the address book by name");
+                Console.WriteLine("6 to Sort the address book by city, state or zip");
                 Console.WriteLine("0 to EXIT");
                 Console.Write("Enter a value: ");
                 Control = Convert.ToInt32(Console.ReadLine());
@@ -264,6 +285,9 @@ namespace AddressBook
                         break;
                     case 5:
                         SortAlphabatically();
+                        break;
+                    case 6:
+                        SortCityStateZip();
                         break;
                     default:
                         Console.WriteLine("Invalid Entry");
