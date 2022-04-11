@@ -1,0 +1,18 @@
+
+The details for Tushar Anand are:
+Address: Asha Apartment
+City: Ghaziabad
+State: Uttar Pradesh
+Zip Code: 201001
+Phone Number: 9876543210
+Email: tusharranand@gmail.com
+
+
+The details for Random Person are:
+Address: Home
+City: City Name
+State: State Name
+Zip Code: 123456
+Phone Number: 1234657890
+Email: email@address.com
+

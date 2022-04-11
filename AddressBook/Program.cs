@@ -16,6 +16,7 @@ namespace AddressBook
             Array_of_Details[5] = Zip;
             Array_of_Details[6] = Phone;
             Array_of_Details[7] = Email;
+            Check();
         }
         public void Check()
         {
@@ -32,7 +33,12 @@ namespace AddressBook
         Dictionary<string, List<string>> cityPerson = new Dictionary<string, List<string>>();
         Dictionary<string, List<string>> statePerson = new Dictionary<string, List<string>>();
         Dictionary<string, List<string>> zipPerson = new Dictionary<string, List<string>>();
+        ExternalOperations external;
 
+        public AddressBookMain(string FileName)
+        {
+            external = new(FileName, Page);
+        }
         public void AddAddress()
         {
             string First_Name;
@@ -64,7 +70,6 @@ namespace AddressBook
             Contacts Record = new Contacts(First_Name, Last_Name, Address, City, State, Zip_Code, 
                 Phone_Number, Email);
             Page.Add(First_Name, Record.Array_of_Details);
-            Record.Check();
             SaveInOtherDictionaries(cityPerson, First_Name, City); 
             SaveInOtherDictionaries(statePerson, First_Name, State);
             SaveInOtherDictionaries(zipPerson, First_Name, Zip_Code);
@@ -107,7 +112,6 @@ namespace AddressBook
                 Edit_Detail[6], Edit_Detail[7]);
             Page.Remove(First_Name);
             Page.Add(Edit_Detail[0], Edit_Detail);
-            Record.Check();
         }
         public void Delete()
         {
@@ -144,7 +148,6 @@ namespace AddressBook
                 Edit_Detail[2], Edit_Detail[3],
                 Edit_Detail[4], Edit_Detail[5],
                 Edit_Detail[6], Edit_Detail[7]);
-            Record.Check();
         }
         public int search(string name, int cityOrState)
         {
@@ -243,6 +246,7 @@ namespace AddressBook
                 Console.WriteLine("4 to Display Contacts");
                 Console.WriteLine("5 to Sort the address book by name");
                 Console.WriteLine("6 to Sort the address book by city, state or zip");
+                Console.WriteLine("7 to Manage external .txt file");
                 Console.WriteLine("0 to EXIT");
                 Console.Write("Enter a value: ");
                 Control = Convert.ToInt32(Console.ReadLine());
@@ -289,6 +293,9 @@ namespace AddressBook
                     case 6:
                         SortCityStateZip();
                         break;
+                    case 7:
+                        external.TxtHandler();
+                        break;
                     default:
                         Console.WriteLine("Invalid Entry");
                         break;
@@ -298,8 +305,8 @@ namespace AddressBook
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Address Book Program");
-            AddressBookMain Relatives = new AddressBookMain();
-            AddressBookMain Work = new AddressBookMain();
+            AddressBookMain Relatives = new AddressBookMain("Relatives");
+            AddressBookMain Work = new AddressBookMain("Work");
             int Control;
             do
             {
