@@ -159,27 +159,4 @@ namespace AddressBook
             sr.Close();
         }
     }
-    //public class Data
-    //{
-    //    public string First_Name { get; set; }
-    //    public string Last_Name { get; set; }
-    //    public string Address { get; set; }
-    //    public string City { get; set; }
-    //    public string State { get; set; }
-    //    public string Zip_Code { get; set; }
-    //    public string Phone_Number { get; set; }
-    //    public string Email { get; set; }
-
-    //    public Data(string[] details)
-    //    {
-    //        First_Name = details[0];
-    //        Last_Name = details[1];
-    //        Address = details[2];
-    //        City = details[3];
-    //        State = details[4];
-    //        Zip_Code = details[5];
-    //        Phone_Number = details[6];
-    //        Email = details[7];
-    //    }
-    //}
 }
