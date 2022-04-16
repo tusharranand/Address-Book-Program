@@ -248,6 +248,7 @@ namespace AddressBook
                 Console.WriteLine("6 to Sort the address book by city, state or zip");
                 Console.WriteLine("7 to Manage external .txt file");
                 Console.WriteLine("8 to Manage external CSV file");
+                Console.WriteLine("9 to Manage external JSON file");
                 Console.WriteLine("0 to EXIT");
                 Console.Write("Enter a value: ");
                 Control = Convert.ToInt32(Console.ReadLine());
@@ -299,6 +300,9 @@ namespace AddressBook
                         break;
                     case 8:
                         external.CSVHandler();
+                        break;
+                    case 9:
+                        external.JSONHandler();
                         break;
                     default:
                         Console.WriteLine("Invalid Entry");
